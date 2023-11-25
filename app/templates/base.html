@@ -6,6 +6,13 @@
     <title>{% block title %} Flask | {% endblock title %}</title>
   </head>
   <body>
+  <header>
+  {# 
+    el include permite agregar un archivo completo de html en este archivo
+    la diferencia con las macros es que los includes no recibe parametros
+  #}
+    {% include "navbar.html" %}
+  </header>
     {% block content %} {% endblock content %}
   </body>
 </html>

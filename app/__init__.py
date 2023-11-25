@@ -4,7 +4,7 @@ from flask import Flask, request, make_response, redirect, render_template
 def create_app():
     app = Flask(__name__)
 
-    todos = ['TODO 1', 'TODO 2', 'TODO 3']
+    todos = ['Comprar cafe', 'Enviar solicitud', 'Entregar video a productor']
 
     @app.route("/")
     def index():

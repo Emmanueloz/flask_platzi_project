@@ -1,21 +1,23 @@
-<!DOCTYPE html>
-<html lang="es_MX">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %} Flask | {% endblock title %}</title>
-    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
-  </head>
-  <body>
-  <header>
-  {# 
+{% extends "bootstrap/base.html" %}
+
+{% block head %}
+  {{super()}}
+  <title>{% block title %} Flask | {% endblock title %}</title>
+  {% block styles %}
+      {{super()}}
+        <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+  {% endblock %}
+{% endblock head %}
+{% block body %}
+  {% block navbar %}
+    {# 
     el include permite agregar un archivo completo de html en este archivo
     la diferencia con las macros es que los includes no recibe parametros
-  #}
+    #}
     {% include "navbar.html" %}
-  </header>
+  {% endblock navbar %}
   <main>
   {% block content %} {% endblock content %}
   </main>  
-  </body>
-</html>
+{% endblock body %}
+

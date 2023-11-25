@@ -1,8 +1,10 @@
 from flask import Flask, request, make_response, redirect, render_template, session
+from flask_bootstrap import Bootstrap
 
 
 def create_app():
     app = Flask(__name__)
+    Bootstrap(app)
     app.config.from_mapping(
         SECRET_KEY='dev',
     )
@@ -31,7 +33,6 @@ def create_app():
 
         # user_ip = request.cookies.get('user_ip')
         user_ip = session.get('user_ip')
-        print(todos)
         context = {
             "user_ip": user_ip,
             "todos": todos

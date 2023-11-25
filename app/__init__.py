@@ -3,22 +3,35 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
+import unittest
 
 
 class LoginForm(FlaskForm):
     username = StringField('Nombre de usuario', validators=[DataRequired()])
-    password = PasswordField("Password", validators=[DataRequired()])
+    password = PasswordField("Contraseña", validators=[DataRequired()])
     submit = SubmitField("Enviar")
 
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
     Bootstrap(app)
     app.config.from_mapping(
         SECRET_KEY='dev',
     )
 
+    if test_config is None:
+        # cargar la configuración de instancia, si existe, cuando no se prueba
+        app.config.from_pyfile('config.py', silent=True)
+    else:
+        # cargar la configuración de ensayo si se pasa en
+        app.config.from_mapping(test_config)
+
     todos = ['Comprar cafe', 'Enviar solicitud', 'Entregar video a productor']
+
+    @app.cli.command()
+    def test():
+        tests = unittest.TestLoader().discover('tests')
+        unittest.TextTestRunner().run(tests)
 
     @app.errorhandler(404)
     def not_found(error):

@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response, redirect, render_template, session, url_for
+from flask import Flask, flash, request, make_response, redirect, render_template, session, url_for
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, PasswordField, SubmitField
@@ -56,6 +56,7 @@ def create_app():
             password = login_form.password.data
             print(password)
             session['username'] = username
+            flash("Nombre de usuario registrado con éxito")
             return redirect(url_for('hello'))
 
         return render_template('hello.html', **context)

@@ -16,8 +16,19 @@
     #}
     {% include "navbar.html" %}
   {% endblock navbar %}
+  {% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible">
+            <button type="button"
+                    data-dismiss="alert"
+                    class="close">&times;</button>
+            {{ message }}
+        </div>
+  {% endfor %}
   <main>
   {% block content %} {% endblock content %}
-  </main>  
+  </main> 
+  {% block scripts %}
+    {{ super() }}
+  {% endblock scripts %}
 {% endblock body %}
 

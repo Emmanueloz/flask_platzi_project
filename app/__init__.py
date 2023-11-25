@@ -6,6 +6,15 @@ def create_app():
 
     todos = ['Comprar cafe', 'Enviar solicitud', 'Entregar video a productor']
 
+    @app.errorhandler(404)
+    def not_found(error):
+        return render_template('404.html', error=error), 404
+
+    @app.errorhandler(500)
+    def internal_server_error(error):
+        # abort(500) provoca un error a
+        return render_template('500.html', error=error), 500
+
     @app.route("/")
     def index():
         user_ip = request.remote_addr

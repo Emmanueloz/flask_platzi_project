@@ -34,6 +34,10 @@ def create_app(test_config=None):
         # abort(500) provoca un error a
         return render_template('500.html', error=error), 500
 
+    from app import auth
+
+    app.register_blueprint(auth.auth)
+
     @app.route("/")
     def index():
         user_ip = request.remote_addr

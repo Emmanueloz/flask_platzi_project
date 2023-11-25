@@ -53,6 +53,8 @@ def create_app():
 
         if login_form.validate_on_submit():
             username = login_form.username.data
+            password = login_form.password.data
+            print(password)
             session['username'] = username
             return redirect(url_for('hello'))
 

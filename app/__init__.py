@@ -46,27 +46,26 @@ def create_app(test_config=None):
         session['user_ip'] = user_ip
         return response
 
-    @app.route("/hello", methods=['GET', 'POST'])
+    @app.route("/hello")
     def hello():
-        # user_ip = request.cookies.get('user_ip')
         user_ip = session.get('user_ip')
-        login_form = LoginForm()
+        # login_form = LoginForm()
         username = session.get('username')
 
         context = {
             "user_ip": user_ip,
             "todos": todos,
-            'login_form': login_form,
+            # 'login_form': login_form,
             'username': username
         }
 
-        if login_form.validate_on_submit():
+        """if login_form.validate_on_submit():
             username = login_form.username.data
             password = login_form.password.data
             print(password)
             session['username'] = username
             flash("Nombre de usuario registrado con éxito")
-            return redirect(url_for('hello'))
+            return redirect(url_for('hello'))"""
 
         return render_template('hello.html', **context)
 

@@ -28,14 +28,8 @@ class MainTest(TestCase):
         self.assert200(response)
 
     def test_hello_post(self):
-        fake_form = {
-            'password': 'fake',
-            'username': 'fake1'
-        }
-
-        response = self.client.post(url_for('hello'), data=fake_form)
-        parsed_location = urlparse(response.location)
-        self.assertEqual(parsed_location.path, url_for('hello'))
+        response = self.client.post(url_for('hello'))
+        self.assertTrue(response, 405)
 
     def test_auth_blueprint_exist(self):
         self.assertIn('auth', self.create_app().blueprints)
@@ -47,3 +41,13 @@ class MainTest(TestCase):
     def test_auth_login_templete(self):
         self.client.get(url_for('auth.login'))
         self.assertTemplateUsed('login.html')
+
+    def test_auth_login_post(self):
+        fake_form = {
+            'username': 'fake',
+            'passwd': 'fake-password'
+        }
+
+        response = self.client.post(url_for("auth.login"), data=fake_form)
+        ruta_esperada = urlparse(url_for('index')).path
+        self.assertEqual(response.location, ruta_esperada)

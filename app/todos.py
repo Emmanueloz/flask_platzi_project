@@ -10,6 +10,10 @@ todos = Blueprint('todos', __name__, url_prefix='/todos')
 @todos.route("/add", methods=["GET", "POST"])
 def add():
     user_id = session.get('user_id')
+
+    if user_id is None:
+        return redirect(url_for('auth.login'))
+
     todo_form = TodosForm()
     todo_form.id_user.data = user_id
     context = {

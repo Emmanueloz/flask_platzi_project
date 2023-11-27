@@ -57,7 +57,7 @@ def create_app(test_config=None):
         user_id = session.get('user_id')
         user_name = session.get('user_name')
         print(user_id, user_name)
-        list_todos = Todos.query.all()
+        list_todos = Todos.query.filter(Todos.id_user == user_id).all()
         context = {
             "user_ip": user_ip,
             "todos": list_todos,

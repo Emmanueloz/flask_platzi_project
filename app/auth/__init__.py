@@ -40,12 +40,17 @@ def signup():
     if login_form.validate_on_submit():
         username = login_form.username.data
         passwd = login_form.passwd.data
-        session['username'] = username
         flash("Nombre de usuario registrado con éxito")
         new_user = User(username, passwd)
         db.session.add(new_user)
         db.session.commit()
 
-        return redirect(url_for('index'))
+        return redirect(url_for('auth.login'))
 
     return render_template('login.html', **context)
+
+
+@auth.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('auth.login'))

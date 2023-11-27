@@ -1,10 +1,19 @@
-from flask import Flask, flash, request, make_response, redirect, render_template, session, url_for
-from flask_bootstrap import Bootstrap
 import unittest
+from flask import Flask, render_template
+from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 
 from app.config import Config
-from app.models.todos import Todos
+from app.models.user import UserLogin
 from app.utils.db import db
+
+login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
+
+
+@login_manager.user_loader
+def load_user(user_name):
+    return UserLogin.query(user_name)
 
 
 def create_app(test_config=None):
@@ -20,8 +29,7 @@ def create_app(test_config=None):
         # cargar la configuración de ensayo si se pasa en
         app.config.from_mapping(test_config)
 
-    todosList = ['Comprar cafe', 'Enviar solicitud',
-                 'Entregar video a productor']
+    login_manager.init_app(app)
 
     @app.cli.command()
     def test():
@@ -44,27 +52,8 @@ def create_app(test_config=None):
     from app import todos
     app.register_blueprint(todos.todos)
 
-    @app.route("/")
-    def index():
-        user_ip = request.remote_addr
-        response = make_response(redirect('/hello'))
-        session['user_ip'] = user_ip
-        return response
-
-    @app.route("/hello")
-    def hello():
-        user_ip = session.get('user_ip')
-        user_id = session.get('user_id')
-        user_name = session.get('user_name')
-        print(user_id, user_name)
-        list_todos = Todos.query.filter(Todos.id_user == user_id).all()
-        context = {
-            "user_ip": user_ip,
-            "todos": list_todos,
-            'user_name': user_name
-        }
-
-        return render_template('hello.html', **context)
+    from app import hello
+    app.register_blueprint(hello.bp)
 
     with app.app_context():
         db.create_all()

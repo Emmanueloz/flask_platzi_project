@@ -9,12 +9,19 @@
   background-color: cornflowerblue;
   height: 45px;
   padding: 5px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .navbar > .navbar-ul {
   display: flex;
+  width: 50%;
   height: 100%;
   align-items: center;
+}
+
+.navbar > .navbar-ul-right {
+  justify-content: end;
 }
 
 .navbar > .navbar-ul > .navbar-ul__logo {
@@ -27,12 +34,17 @@
 .navbar > .navbar-ul > .navbar-ul__item {
   list-style: none;
   margin-right: 10px;
+  color: aliceblue;
 }
 
 .navbar > .navbar-ul > .navbar-ul__item > a {
   text-decoration: none;
   color: aliceblue;
   font-weight: bold;
+}
+
+.navbar > .navbar-ul > .navbar-ul__item > strong {
+  text-transform: capitalize;
 }
 
 main {

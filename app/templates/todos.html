@@ -3,13 +3,10 @@
 
 {% block title %} 
 
-{{ super() }} Loin
+{{ super() }} Add Todos 
 {% endblock title %} 
-
-{% block content %} 
-
+{% block content %}
 <div class="container">
-  {{ wtf.quick_form(login_form)}}
+  {{ wtf.quick_form(todo_form)}}
 </div>
-
 {% endblock content %}

@@ -2,14 +2,16 @@ from flask import Flask, flash, request, make_response, redirect, render_templat
 from flask_bootstrap import Bootstrap
 import unittest
 
-from app.forms import LoginForm
 from app.config import Config
+from app.models.todos import Todos
+from app.utils.db import db
 
 
 def create_app(test_config=None):
     app = Flask(__name__)
     Bootstrap(app)
     app.config.from_object(Config)
+    db.init_app(app)
 
     if test_config is None:
         # cargar la configuración de instancia, si existe, cuando no se prueba
@@ -18,7 +20,8 @@ def create_app(test_config=None):
         # cargar la configuración de ensayo si se pasa en
         app.config.from_mapping(test_config)
 
-    todos = ['Comprar cafe', 'Enviar solicitud', 'Entregar video a productor']
+    todosList = ['Comprar cafe', 'Enviar solicitud',
+                 'Entregar video a productor']
 
     @app.cli.command()
     def test():
@@ -38,35 +41,32 @@ def create_app(test_config=None):
 
     app.register_blueprint(auth.auth)
 
+    from app import todos
+    app.register_blueprint(todos.todos)
+
     @app.route("/")
     def index():
         user_ip = request.remote_addr
         response = make_response(redirect('/hello'))
-        # response.set_cookie('user_ip', user_ip)
         session['user_ip'] = user_ip
         return response
 
     @app.route("/hello")
     def hello():
         user_ip = session.get('user_ip')
-        # login_form = LoginForm()
-        username = session.get('username')
-
+        user_id = session.get('user_id')
+        user_name = session.get('user_name')
+        print(user_id, user_name)
+        list_todos = Todos.query.all()
         context = {
             "user_ip": user_ip,
-            "todos": todos,
-            # 'login_form': login_form,
-            'username': username
+            "todos": list_todos,
+            'user_name': user_name
         }
 
-        """if login_form.validate_on_submit():
-            username = login_form.username.data
-            password = login_form.password.data
-            print(password)
-            session['username'] = username
-            flash("Nombre de usuario registrado con éxito")
-            return redirect(url_for('hello'))"""
-
         return render_template('hello.html', **context)
+
+    with app.app_context():
+        db.create_all()
 
     return app

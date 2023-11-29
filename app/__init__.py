@@ -21,6 +21,7 @@ def create_app(test_config=None):
     Bootstrap(app)
     app.config.from_object(Config)
     db.init_app(app)
+    login_manager.init_app(app)
 
     if test_config is None:
         # cargar la configuración de instancia, si existe, cuando no se prueba
@@ -28,8 +29,6 @@ def create_app(test_config=None):
     else:
         # cargar la configuración de ensayo si se pasa en
         app.config.from_mapping(test_config)
-
-    login_manager.init_app(app)
 
     @app.cli.command()
     def test():
@@ -46,7 +45,6 @@ def create_app(test_config=None):
         return render_template('500.html', error=error), 500
 
     from app import auth
-
     app.register_blueprint(auth.auth)
 
     from app import todos

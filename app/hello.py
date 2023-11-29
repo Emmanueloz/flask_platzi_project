@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session, request, make_response, redirect
 from app.models.todos import Todos
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 bp = Blueprint("hello", __name__)
 
@@ -14,11 +14,14 @@ def index():
 
 
 @bp.route("/hello")
-# @login_required
+@login_required
 def hello():
     user_ip = session.get('user_ip')
-    user_id = session.get('user_id')
-    user_name = session.get('user_name')
+    # user_id = session.get('user_id')
+    # user_name = session.get('user_name')
+    user_id = current_user.id
+    user_name = current_user.username
+
     print(user_id, user_name)
     list_todos = Todos.query.filter(Todos.id_user == user_id).all()
     context = {

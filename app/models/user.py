@@ -13,12 +13,13 @@ class User(db.Model):
 
 
 class UserLogin(UserMixin):
-    def __init__(self, user_data: User) -> None:
-        self.id = user_data.id
-        self.username = user_data.username
-        self.passwd = user_data.passwd
+    def __init__(self, id, username, passwd) -> None:
+        self.id = id
+        self.username = username
+        self.passwd = passwd
 
     @staticmethod
     def query(user_name):
-        user = User.query.filter(User.username == user_name).all()
-        return UserLogin(user)
+        user: User = User.query.get(user_name)
+        print(user.id)
+        return UserLogin(user.id, user.username, user.passwd)

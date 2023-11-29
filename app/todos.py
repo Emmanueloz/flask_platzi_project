@@ -2,17 +2,16 @@ from flask import Blueprint, flash, redirect, render_template, session, url_for
 from app.forms import TodosForm
 from app.utils.db import db
 from app.models.todos import Todos
-from app.models.user import User
+from flask_login import login_required, current_user
 
 todos = Blueprint('todos', __name__, url_prefix='/todos')
 
 
 @todos.route("/add", methods=["GET", "POST"])
+@login_required
 def add():
-    user_id = session.get('user_id')
-
-    if user_id is None:
-        return redirect(url_for('auth.login'))
+    user_id = current_user.id
+    print(user_id)
 
     todo_form = TodosForm()
     todo_form.id_user.data = user_id
@@ -28,6 +27,5 @@ def add():
         new_todo = Todos(id_use, description)
         db.session.add(new_todo)
         db.session.commit()
-        return redirect(url_for("hello"))
-
+        return redirect(url_for("hello.index"))
     return render_template('todos.html', **context)

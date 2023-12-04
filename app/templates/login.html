@@ -3,12 +3,24 @@
 
 {% block title %} 
 
-{{ super() }} Loin
+{{ super() }}
+
+{% if is_signup %}
+Signup
+{% else %}
+Login
+{% endif %}
+
 {% endblock title %} 
 
 {% block content %} 
 
 <div class="container">
+  {% if is_signup %}
+    <h3>Crear Usuario</h3>
+  {% else %}
+    <h3>Iniciar Sesion</h3>
+  {% endif %}
   {{ wtf.quick_form(login_form)}}
 </div>
 

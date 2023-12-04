@@ -1,16 +1,37 @@
 <nav class="navbar">
   <ul class="navbar-ul">
-    <img src="{{url_for('static',filename='images/platzi.png')}}" alt="Platzi logo" class="navbar-ul__logo">
+    <img
+      src="{{url_for('static',filename='images/platzi.png')}}"
+      alt="Platzi logo"
+      class="navbar-ul__logo"
+    />
     {% if current_user.is_authenticated %}
-      <li class="navbar-ul__item"><a href="{{url_for('hello.index')}}">Ir a inicio</a></li>
-      <li class="navbar-ul__item"><a href="{{url_for('todos.add')}}" >Add Todo</a></li>
+    <li class="navbar-ul__item">
+      <a href="{{url_for('hello.index')}}">Ir a inicio</a>
+    </li>
+    <li class="navbar-ul__item">
+      <a href="{{url_for('todos.add')}}">Add Todo</a>
+    </li>
     {% endif %}
-    <li class="navbar-ul__item"><a href="https://platzi.com" target="_blank">Ir a Platzi</a></li>
+    <li class="navbar-ul__item">
+      <a href="https://platzi.com" target="_blank">Ir a Platzi</a>
+    </li>
   </ul>
   <ul class="navbar-ul navbar-ul-right">
     {% if current_user.is_authenticated %}
-    <span class="navbar-ul__item">User:   <strong>{{current_user.username}}</strong></span>
-    <li class="navbar-ul__item"><a href="/auth/logout" >logout</a></li>
+    <span class="navbar-ul__item"
+      >User: <strong>{{current_user.username}}</strong></span
+    >
+    <li class="navbar-ul__item">
+      <a href="{{url_for('auth.logout')}}">Logout</a>
+    </li>
+    {% else %}
+    <li class="navbar-ul__item">
+      <a href="{{url_for('auth.login')}}">Login</a>
+    </li>
+    <li class="navbar-ul__item">
+      <a href="{{url_for('auth.signup')}}">Signup</a>
+    </li>
     {% endif %}
   </ul>
 </nav>

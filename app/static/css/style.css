@@ -50,3 +50,16 @@
 main {
   margin: 10px 30px;
 }
+
+.container-todo{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.todo{
+  min-height: 80px;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+}

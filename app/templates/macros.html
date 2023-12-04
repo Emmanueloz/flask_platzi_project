@@ -1,6 +1,10 @@
-{# 
-  las macros son funciones que renderizand un elemento en especifico, es parecido a implementar componentes
-#}
-{% macro render_todo(todo) %}
-  <li>Descripción: {{todo.description}}</li>
+{# las macros son funciones que renderizand un elemento en especifico, es
+parecido a implementar componentes #} {% macro render_todo(todo) %}
+<article class="todo">
+  <p>Descripción: {{todo.description}}</p>
+  <div class="btn-group" role="group">
+    <a href="" class="btn btn-sm btn-warning">Editar</a>
+    <a href="" class="btn btn-sm btn-danger">Eliminar</a>
+  </div>
+</article>
 {% endmacro %}

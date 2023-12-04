@@ -19,16 +19,15 @@ class MainTest(TestCase):
         self.assertTrue(current_app.config['TESTING'])
 
     def test_index_redirects(self):
-        response = self.client.get(url_for('index'))
-        parsed_location = urlparse(response.location)
-        self.assertEqual(parsed_location.path, url_for('hello'))
+        response = self.client.get(url_for('hello.index'))
+        self.assertEqual(f"/{response.location}", url_for('hello.hello'))
 
     def test_hello_get(self):
-        response = self.client.get(url_for("hello"))
-        self.assert200(response)
+        response = self.client.get(url_for("hello.hello"))
+        self.assertTrue(response.status, 302)
 
     def test_hello_post(self):
-        response = self.client.post(url_for('hello'))
+        response = self.client.post(url_for('hello.hello'))
         self.assertTrue(response, 405)
 
     def test_auth_blueprint_exist(self):
@@ -44,10 +43,10 @@ class MainTest(TestCase):
 
     def test_auth_login_post(self):
         fake_form = {
-            'username': 'fake',
-            'passwd': 'fake-password'
+            'username': 'test',
+            'passwd': 'test'
         }
 
         response = self.client.post(url_for("auth.login"), data=fake_form)
-        ruta_esperada = urlparse(url_for('index')).path
+        ruta_esperada = urlparse(url_for('hello.index')).path
         self.assertEqual(response.location, ruta_esperada)

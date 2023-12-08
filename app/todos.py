@@ -29,3 +29,21 @@ def add():
         db.session.commit()
         return redirect(url_for("hello.index"))
     return render_template('todos.html', **context)
+
+@todos.get("/delete/<todo_id>")
+@login_required
+def delete(todo_id):
+    del_todo = Todos.query.get(todo_id)
+    
+    if del_todo is None:
+        flash("El todo no existe, no se puede eliminar")
+        return redirect(url_for("hello.index"))
+    
+    try:        
+        db.session.delete(del_todo)
+        db.session.commit()
+        flash("Todo eliminado correctamente")
+    except:
+        flash("Ocurrió un error para a la hora de eliminar el todo")
+    return redirect(url_for("hello.index"))
+    

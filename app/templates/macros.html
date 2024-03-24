@@ -4,7 +4,12 @@ parecido a implementar componentes #} {% macro render_todo(todo) %}
   <p>Descripción: {{todo.description}}</p>
   <div class="btn-group" role="group">
     <a href="" class="btn btn-sm btn-warning">Editar</a>
-    <a href="" class="btn btn-sm btn-danger">Eliminar</a>
+    <a
+      href="{{url_for('todos.delete',todo_id=todo.id)}}"
+      class="btn btn-sm btn-danger"
+    >
+      Eliminar
+    </a>
   </div>
 </article>
 {% endmacro %}
